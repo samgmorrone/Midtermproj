@@ -35,20 +35,22 @@ if (process.env.NODE_ENV !== 'production') {
   app.use(methodOverride('_method'))
   // users
   app.get('/users', checkAuthenticated, (req, res) => {
-    res.render('users.ejs', { name: req.user.name, weight: details })
+    res.render('users.ejs', { name: req.user.name, weight: details.toString() })
   })
   
   app.get('/', checkAuthenticated, (req, res) => {
     res.render('index.ejs', { name: req.user.name })
   })
-  app.post('/',  async (req, res) => {
+  app.post('/',  checkAuthenticated,async (req, res) => {
     try {
         
         details.push({
         weight: req.body.Currentweight1,
-        height: req.body.height,
+        height: req.body.Currentheight1,
         exercise :req.body.exercise1
       })
+      
+    console.log(details)
       res.redirect('/users')
     } catch {
       res.redirect('/users')
@@ -105,7 +107,6 @@ if (process.env.NODE_ENV !== 'production') {
     }
     next()
   }
-
 
 
   app.listen(3000)
